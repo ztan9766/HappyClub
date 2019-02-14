@@ -6,7 +6,7 @@ export default function jwtCheck (req, res, next) {
   if (token) {
     jwt.verify(token, config.secret, function (err, decoded) {
       if (err) {
-        return res.json({ success: false, message: '无效的token.' })
+        return res.json({ success: false, message: '无效的token.', cleanStorage: true })
       } else {
         req.decoded = decoded
         next()
