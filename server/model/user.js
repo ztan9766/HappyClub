@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const userModel = new Schema({
   name: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, default: 'normal' }
+  admin: { type: Boolean, default: false }
 })
 
 export default mongoose.model('user', userModel)

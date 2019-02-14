@@ -3,12 +3,13 @@ import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import mongoose from 'mongoose'
 import config from './config'
-import userController from './controller/user'
-import eventController from './controller/event'
-import accidentController from './controller/accident'
+import authRouter from './router/auth'
+import userRouter from './router/user'
+import eventRouter from './router/event'
+import accidentRouter from './router/accident'
 
-const db = mongoose.connect(
-  'mongodb://127.0.0.1:27017/hc',
+mongoose.connect(
+  config.db,
   { useNewUrlParser: true },
   function (err) {
     if (err) {
@@ -29,9 +30,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.get('/', (req, res) => {
   res.status(200).send('This is an API server.')
 })
-app.use('/api/user', userController)
-app.use('/api/event', eventController)
-app.use('/api/accident', accidentController)
+app.use('/', authRouter)
+app.use('/api/user', userRouter)
+app.use('/api/event', eventRouter)
+app.use('/api/accident', accidentRouter)
 
 const port = config.port || 5656
 

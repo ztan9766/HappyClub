@@ -1,27 +1,31 @@
 import express from 'express'
 import User from '../model/user'
+import jwtCheck from '../middleware/jwtCheck'
 
-const userController = express.Router()
+const userRouter = express.Router()
 
-userController
+userRouter.use(jwtCheck)
+
+userRouter
   .route('/')
   .get((req, res) => {
     User.find({}, (err, _users) => {
       if (err) {
         res.status(500).send(err)
       } else {
+        console.log(req.decoded)
         res.json(_users)
       }
     })
   })
-userController
+userRouter
   .route('/create')
   .post((req, res) => {
     let _user = new User(req.body)
     _user.save()
     res.status(201).send(`User ${_user.name} created.`)
   })
-userController
+userRouter
   .route('/:userId')
   .get((req, res) => {
     User.findById(req.params.userId, (err, _user) => {
@@ -60,4 +64,4 @@ userController
     })
   })
 
-export default userController
+export default userRouter
