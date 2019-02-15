@@ -20,6 +20,7 @@ mongoose.connect(
   }
 )
 mongoose.set('useCreateIndex', true)
+mongoose.set('useFindAndModify', false)
 
 const app = express()
 
@@ -30,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.get('/', (req, res) => {
   res.status(200).send('This is an API server.')
 })
-app.use('/', authRouter)
+app.use('/api', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/event', eventRouter)
 app.use('/api/accident', accidentRouter)
