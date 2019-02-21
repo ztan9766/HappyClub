@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import mongoose from 'mongoose'
+import cors from 'cors'
 import config from './config'
 import authRouter from './router/auth'
 import userRouter from './router/user'
@@ -27,6 +28,18 @@ const app = express()
 app.use(helmet())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+const whitelist = ['http://localhost', 'http://localhost:8080']
+app.use(cors({
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true
+}))
 
 app.get('/', (req, res) => {
   res.status(200).send('This is an API server.')

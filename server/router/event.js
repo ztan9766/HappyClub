@@ -6,38 +6,33 @@ const eventRouter = express.Router()
 
 eventRouter.use(jwtCheck)
 
-eventRouter.route('/getActive').get((req, res) => {
+eventRouter.route('/active').get((req, res) => {
   Event.find({ status: 'active' }, (err, _events) => {
     if (err) {
-      res
-        .status(500)
-        .send({ success: false, message: 'Can not find active events.' })
+      res.status(500).send({ success: false, message: 'Can not find active events.' })
+    } else {
+      res.status(200).send({ success: true, data: { events: _events } })
     }
-    res.status(200).send({ success: true, data: _events })
   })
 })
 
-eventRouter.route('/getAll').get((req, res) => {
+eventRouter.route('/all').get((req, res) => {
   Event.find({}, (err, _events) => {
     if (err) {
-      res
-        .status(500)
-        .send({ success: false, message: 'Can not find any events.' })
+      res.status(500).send({ success: false, message: 'Can not find any events.' })
+    } else {
+      res.status(200).send({ success: true, data: { events: _events } })
     }
-    res.status(200).send({ success: true, data: _events })
   })
 })
 
 eventRouter.route('/create').post((req, res) => {
   Event.create(req.body, function (err, _event) {
     if (err) {
-      res
-        .status(500)
-        .send({ success: false, message: 'Event creation failed.' })
+      res.status(500).send({ success: false, message: 'Event creation failed.' })
+    } else {
+      res.status(200).send({ success: true, message: `Event ${_event.name} created.` })
     }
-    res
-      .status(200)
-      .send({ success: true, message: `Event ${_event.name} created.` })
   })
 })
 
@@ -47,18 +42,19 @@ eventRouter
     Event.findById(req.params.eventId, (err, _event) => {
       if (err) {
         res.status(500).send({ success: false, message: 'Can not get event.' })
+      } else {
+        res.json({
+          success: true,
+          message: `${_event.name} detail`,
+          data: { event: _event }
+        })
       }
-      res.json({
-        success: true,
-        message: `${_event.name} detail`,
-        data: _event
-      })
     })
   })
 
 eventRouter
   .route('/update/:eventId')
-  .put((req, res) => {
+  .post((req, res) => {
     let updateData = {}
     if (req.body.name) updateData.name = req.body.name
     if (req.body.date) updateData.date = req.body.date
@@ -70,8 +66,11 @@ eventRouter
         { _id: req.params.eventId },
         updateData,
         (err, _event) => {
-          if (err) res.status(500).send(err)
-          else res.status(200).send({ success: true, message: `Event ${_event.name} updated.` })
+          if (err) {
+            res.status(500).send(err) 
+          } else {
+            res.status(200).send({ success: true, message: `Event ${_event.name} updated.` })
+          }
         }
       )
     } else {
@@ -83,8 +82,11 @@ eventRouter
   .route('/delete/:eventId')
   .delete((req, res) => {
     Event.deleteOne({ _id: req.params.eventId }, err => {
-      if (err) res.status(500).send({ success: false, message: 'Event not found.' })
-      res.status(200).send({ success: true, message: `User ${req.params.eventId} removed.` })
+      if (err) {
+        res.status(500).send({ success: false, message: 'Event not found.' })
+      } else {
+        res.status(200).send({ success: true, message: `User ${req.params.eventId} removed.` })
+      }
     })
   })
 

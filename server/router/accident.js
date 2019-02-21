@@ -6,27 +6,23 @@ const accidentRouter = express.Router()
 
 accidentRouter.use(jwtCheck)
 
-accidentRouter.route('/getAll').get((req, res) => {
+accidentRouter.route('/all').get((req, res) => {
   Accident.find({}, (err, _accidents) => {
     if (err) {
-      res
-        .status(500)
-        .send({ success: false, message: 'Can not find accidents.' })
+      res.status(500).send({ success: false, message: 'Can not find accidents.' })
+    } else {
+      res.status(200).send({ success: true, data: { accidents: _accidents } })
     }
-    res.status(200).send({ success: true, data: _accidents })
   })
 })
 
 accidentRouter.route('/create').post((req, res) => {
   Accident.create(req.body, function (err, _accident) {
     if (err) {
-      res
-        .status(500)
-        .send({ success: false, message: 'Accident creation failed.' })
+      res.status(500).send({ success: false, message: 'Accident creation failed.' })
+    } else {
+      res.status(200).send({ success: true, message: `Accident ${_accident.name} created.` })
     }
-    res
-      .status(200)
-      .send({ success: true, message: `Accident ${_accident.name} created.` })
   })
 })
 
@@ -35,21 +31,20 @@ accidentRouter
   .get((req, res) => {
     Accident.findById(req.params.accidentId, (err, _accident) => {
       if (err) {
-        res
-          .status(500)
-          .send({ success: false, message: 'Can not get accident.' })
+        res.status(500).send({ success: false, message: 'Can not get accident.' })
+      } else {
+        res.json({
+          success: true,
+          message: `${_accident.name} detail`,
+          data: { accident: _accident }
+        })
       }
-      res.json({
-        success: true,
-        message: `${_accident.name} detail`,
-        data: _accident
-      })
     })
   })
 
 accidentRouter
   .route('/update/:accidentId')
-  .put((req, res) => {
+  .post((req, res) => {
     let updateData = {}
     if (req.body.name) updateData.name = req.body.name
     if (req.body.user) updateData.user = req.body.user
@@ -61,10 +56,11 @@ accidentRouter
         { _id: req.decoded._id },
         updateData,
         (err, _accident) => {
-          if (err) res.status(500).send(err)
-          _accident.password = req.body.password
-          _accident.save()
-          res.status(200).send({ success: true, message: 'Accident updated.' })
+          if (err) {
+            res.status(500).send(err)
+          } else {
+            res.status(200).send({ success: true, message: 'Accident updated.' })
+          }
         }
       )
     } else {
@@ -76,8 +72,11 @@ accidentRouter
   .route('/delete/:accidentId')
   .delete((req, res) => {
     Accident.deleteOne({ _id: req.params.userId }, err => {
-      if (err) res.status(500).send({ success: false, message: 'Accident not found.' })
-      res.status(200).send({ success: true, message: `User ${req.params.id} removed.` })
+      if (err) {
+        res.status(500).send({ success: false, message: 'Accident not found.' })
+      } else {
+        res.status(200).send({ success: true, message: `User ${req.params.id} removed.` })
+      }
     })
   })
 

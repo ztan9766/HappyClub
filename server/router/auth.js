@@ -8,7 +8,7 @@ const authRouter = express.Router()
 authRouter.post('/auth', function (req, res) {
   User.findOne(
     {
-      name: req.body.name
+      name: req.body.username
     },
     function (err, user) {
       if (err) throw err
@@ -24,12 +24,26 @@ authRouter.post('/auth', function (req, res) {
           res.json({
             success: true,
             message: 'Token generated.',
-            token: token
+            data: {
+              token: token,
+              name: user.name,
+              id: user.id
+            }
           })
         }
       }
     }
   )
+})
+
+authRouter.route('/verifyToken').post((req, res) => {
+  jwt.verify(req.body.token, config.secret, (err, decoded) => {
+    if (err) {
+      res.json({ success: false, message: 'Invalid token' })
+    } else {
+      res.json({ success: true, message: 'Valid token' })
+    }
+  })
 })
 
 export default authRouter
