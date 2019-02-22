@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import api from '../api'
+import api from './api'
 
 export default {
   name: 'login',
@@ -34,7 +34,7 @@ export default {
       }).then(res => {
         if (res.success){
           this.$store.dispatch('login', res.data)
-          this.$router.push({ path :'/rank' })
+          this.$router.push({ path :'/pigeonHouse' })
         }else{
           this.password = ''
           this.$message.error(res.message)

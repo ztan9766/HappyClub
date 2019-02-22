@@ -1,27 +1,30 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import pages from './pages'
 import store from './store'
+import login from './pages/login'
+import pageNoFound from './pages/pageNoFound'
+import pigeonHouse from './pages/pigeonHouse'
 
 Vue.use(VueRouter)
 
-let routes = []
-
-for(const page of pages) {
-  let routesModule = require(`./pages/${page}/routes.js`)
-  routes = routes.concat(routesModule.default)
-}
-
-routes.push(
+let routes = [
+  {
+    path: '/login',
+    component: login
+  },
+  {
+    path: '/pigeonHouse',
+    component: pigeonHouse
+  },
   {
     path: '/',
     redirect: '/login'
   },
   {
     path: '*',
-    redirect: '/404'
+    redirect: pageNoFound
   }
-)
+]
 
 const router = new VueRouter({
   mode: 'hash',

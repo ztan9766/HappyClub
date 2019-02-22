@@ -8,6 +8,7 @@ import authRouter from './router/auth'
 import userRouter from './router/user'
 import eventRouter from './router/event'
 import accidentRouter from './router/accident'
+import rankRouter from './router/rank'
 
 mongoose.connect(
   config.db,
@@ -48,6 +49,7 @@ app.use('/api', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/event', eventRouter)
 app.use('/api/accident', accidentRouter)
+app.use('/api/rank', rankRouter)
 
 const port = config.port || 5656
 

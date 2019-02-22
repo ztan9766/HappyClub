@@ -1,4 +1,5 @@
 import express from 'express'
+import moment from 'moment'
 import Event from '../model/event'
 import jwtCheck from '../middleware/jwtCheck'
 
@@ -57,7 +58,7 @@ eventRouter
   .post((req, res) => {
     let updateData = {}
     if (req.body.name) updateData.name = req.body.name
-    if (req.body.date) updateData.date = req.body.date
+    if (req.body.date) updateData.date = moment(req.body.date).unix()
     if (req.body.description) updateData.description = req.body.description
     if (req.body.status) updateData.status = req.body.status
 

@@ -1,4 +1,5 @@
 import express from 'express'
+import moment from 'moment'
 import Accident from '../model/accident'
 import jwtCheck from '../middleware/jwtCheck'
 
@@ -47,7 +48,7 @@ accidentRouter
   .post((req, res) => {
     let updateData = {}
     if (req.body.name) updateData.name = req.body.name
-    if (req.body.user) updateData.user = req.body.user
+    if (req.body.user) updateData.user = moment(req.body.user).unix()
     if (req.body.event) updateData.event = req.body.event
     if (req.body.description) updateData.description = req.body.description
 

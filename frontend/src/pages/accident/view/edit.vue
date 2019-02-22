@@ -88,6 +88,7 @@ export default {
               message: res.message,
               type: 'success'
             })
+            this.clear()
           }else{
             this.$message({
               message: res.message,
@@ -112,7 +113,13 @@ export default {
       }
     },
     clear() {
-      console.log('clear')
+      this.form = {
+        id: '',
+        name: '',
+        description: '',
+        user: '',
+        event: ''
+      }
     }
   }
 }
