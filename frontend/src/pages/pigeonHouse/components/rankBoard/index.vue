@@ -25,9 +25,20 @@ export default {
   methods: {
     pullData() {
       api.getRankData().then(res => {
-        this.month = res.data.rankLists.mon
-        this.all = res.data.rankLists.all
+        if (res.success && res.data.rankLists) {
+          this.month = res.data.rankLists.mon.sort(this.keySort('times',true))
+          this.all = res.data.rankLists.all.sort(this.keySort('times',true))
+        }else{
+          this.$message({
+            message: 'Can\'t get rank list'
+          })
+        }
       })
+    },
+    keySort(key,sortType) {
+        return function(a,b){
+            return sortType ? ~~(a[key] < b[key]) : ~~(a[key] > b[key]);
+        }
     }
   }
 }

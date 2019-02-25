@@ -7,4 +7,11 @@ const getRankData = () => {
   })
 }
 
-export default { getRankData }
+const getHouses = () => {
+  return request({
+    url: 'event/houses',
+    method: 'get'
+  })
+}
+
+export default { getRankData, getHouses }

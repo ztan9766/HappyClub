@@ -44,6 +44,21 @@ accidentRouter
   })
 
 accidentRouter
+  .route('/findByEvent/:eventId')
+  .get((req, res) => {
+    Accident.find({ event: req.params.eventId }, (err, _accidents) => {
+      if (err) {
+        res.status(500).send({ success: false, message: 'error when finding accidents' })
+      } else {
+        res.json({
+          success: true,
+          data: { accidents: _accidents }
+        })
+      }
+    })
+  })
+
+accidentRouter
   .route('/update/:accidentId')
   .post((req, res) => {
     let updateData = {}

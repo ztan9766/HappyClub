@@ -58,6 +58,7 @@ async function getRankLists () {
     let accidents = await getAccidents(user.id)
     list.all.push({
       id: user.id,
+      name: user.name,
       times: accidents.length
     })
     let events = []
@@ -67,6 +68,7 @@ async function getRankLists () {
     let _events = await getEvents(start, end, events)
     list.mon.push({
       id: user.id,
+      name: user.name,
       times: _events.length
     })
   }
