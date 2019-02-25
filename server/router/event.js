@@ -91,7 +91,6 @@ eventRouter.route('/houses').get((req, res) => {
             for (const _accident of _accidents) {
               if (_accident.event.toString() === latestThreeEvents[i].id) {
                 latestThreeEvents[i].accidents.push(_accident)
-                console.log(latestThreeEvents[i].accidents)
               }
             }
           }
