@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <div v-for="house in houses" :key="house.name">
-      {{ house.name }}
-      <div v-for="pigeon in pigeons" :key="pigeon.name">
+  <div class="houses">
+    <div class="house" v-for="house in houses" :key="house.name">
+      <div class="name">{{ house.name }}</div>
+      <div class="pigeon" v-for="pigeon in pigeons" :key="pigeon.name">
         <div v-if="pigeon.id === house.event">{{ pigeon.name }}</div>
       </div>
     </div>
@@ -45,3 +45,22 @@ export default {
   }
 }
 </script>
+<style scoped>
+.houses{
+  position: absolute;
+  left: 15%;
+  width: 70%;
+  bottom: 0;
+  text-align: center;
+}
+.house{
+  padding: 20px 10px;
+}
+.pigeon{
+  display: inline-block;
+  padding: 0 10px;
+  width: 80px;
+  height: 80px;
+  word-break: break-all
+}
+</style>

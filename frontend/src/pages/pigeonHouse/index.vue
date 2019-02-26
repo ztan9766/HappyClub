@@ -1,7 +1,7 @@
 <template>
   <el-container>
-    <el-header>
-      <el-col :span="4" :offset="20">{{ name }}</el-col>
+    <el-header height="40px">
+      <el-col class="name" :span="4" :offset="20">{{ name }}</el-col>
     </el-header>
     <el-main>
       <rank-board />
@@ -43,6 +43,19 @@ export default {
 }
 </script>
 <style scoped>
+  .name{
+    color: #fff;
+  }
+  .edit-btn.house{
+    position: absolute;
+    bottom: 18px;
+    left: 18px;
+  }
+  .edit-btn.pigeon{
+    position: absolute;
+    bottom: 18px;
+    right: 18px;
+  }
   .edit-btn  i{
     font-size: 34px;
   }

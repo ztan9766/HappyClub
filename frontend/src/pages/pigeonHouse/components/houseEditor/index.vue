@@ -64,19 +64,45 @@ export default {
   },
   methods: {
     onSubmit() {
-      api.updateHouse(this.form._id, this.form).then(res => {
-        if (res.success) {
+      if (this.isNew) {
+        api.createHouse(this.form).then(res => {
+          if (res.success) {
+            this.$message({
+              message: res.message,
+              type: 'success'
+            })
+          }else{
+            this.$message({
+              message: res.message,
+              type: 'error'
+            })
+          }
+        }).catch(err => {
           this.$message({
-            message: res.message,
-            type: 'success'
-          })
-        }else{
-          this.$message({
-            message: res.message,
+            message: err.message,
             type: 'error'
           })
-        }
-      })
+        })
+      } else {
+        api.updateHouse(this.form._id, this.form).then(res => {
+          if (res.success) {
+            this.$message({
+              message: res.message,
+              type: 'success'
+            })
+          }else{
+            this.$message({
+              message: res.message,
+              type: 'error'
+            })
+          }
+        }).catch(err => {
+          this.$message({
+            message: err.message,
+            type: 'error'
+          })
+        })
+      }
     },
     clear() {
       this.form = {
