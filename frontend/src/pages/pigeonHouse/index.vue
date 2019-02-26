@@ -6,8 +6,16 @@
     <el-main>
       <rank-board />
       <houses />
-      <house-editor />
-      <pigeon-editer />
+      <!-- House editor -->
+      <el-button class="edit-btn house" type="primary" icon="el-icon-plus" circle @click="houseDialogVisible = true"></el-button>
+      <el-dialog title="新活动" :visible.sync="houseDialogVisible" width="90%">
+        <house-editor/>
+      </el-dialog>
+      <!-- Pigeon editor -->
+      <el-button class="edit-btn pigeon" type="warning" icon="el-icon-plus" circle @click="pigeonDialogVisible = true"></el-button>
+      <el-dialog title="新鸽子" :visible.sync="pigeonDialogVisible" width="90%">
+        <pigeon-editer/>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -27,8 +35,15 @@ export default {
   },
   data() {
     return {
-      name: this.$store.state.name
+      name: this.$store.state.name,
+      houseDialogVisible: false,
+      pigeonDialogVisible: false
     }
   }
 }
 </script>
+<style scoped>
+  .edit-btn  i{
+    font-size: 34px;
+  }
+</style>

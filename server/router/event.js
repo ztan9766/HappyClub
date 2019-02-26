@@ -82,19 +82,19 @@ eventRouter.route('/houses').get((req, res) => {
       res.status(500).send({ success: false, message: 'error when finding events.' })
     } else {
       let latestThreeEvents = _events.slice(0, 2)
+      let accidents = []
       Accident.find({}).exec((err, _accidents) => {
         if (err) {
           res.status(500).send({ success: false, message: 'error when finding accidents' })
         } else {
           for (let i = 0; i < latestThreeEvents.length; i++) {
-            latestThreeEvents[i].accidents = []
             for (const _accident of _accidents) {
               if (_accident.event.toString() === latestThreeEvents[i].id) {
-                latestThreeEvents[i].accidents.push(_accident)
+                accidents.push(_accident)
               }
             }
           }
-          res.status(200).send({ success: true, data: { events: latestThreeEvents } })
+          res.status(200).send({ success: true, data: { events: latestThreeEvents, accidents: accidents } })
         }
       })
     }
