@@ -43,7 +43,7 @@ export default {
       month: [],
       all: [],
       active: 'month',
-      stay: false
+      stay: true
     }
   },
   methods: {
