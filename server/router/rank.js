@@ -56,21 +56,25 @@ async function getRankLists () {
   const users = await getAllUsers()
   for (const user of users) {
     let accidents = await getAccidents(user.id)
-    list.all.push({
-      id: user.id,
-      name: user.name,
-      times: accidents.length
-    })
+    if (accidents.length > 0) {
+      list.all.push({
+        id: user.id,
+        name: user.name,
+        times: accidents.length
+      })
+    }
     let events = []
     for (const accident of accidents) {
       events.push(accident.event)
     }
     let _events = await getEvents(start, end, events)
-    list.mon.push({
-      id: user.id,
-      name: user.name,
-      times: _events.length
-    })
+    if (_events.length > 0) {
+      list.mon.push({
+        id: user.id,
+        name: user.name,
+        times: _events.length
+      })
+    }
   }
   return list
 }

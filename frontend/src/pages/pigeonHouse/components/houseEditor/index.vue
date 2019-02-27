@@ -20,7 +20,8 @@
       </el-select>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="onSubmit">修改</el-button>
+      <el-button v-if="isNew" type="primary" @click="onSubmit">修改</el-button>
+      <el-button v-else type="primary" @click="onSubmit">保存</el-button>
     </el-form-item>
   </el-form>
 </template>
