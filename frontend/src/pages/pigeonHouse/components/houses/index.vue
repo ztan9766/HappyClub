@@ -1,6 +1,6 @@
 <template>
   <div class="houses">
-    <div class="house" v-for="house in houses" :key="house.name">
+    <div class="house" v-for="house in houses" :key="house.name" v-on:refreshHouses="getHouses">
       <div class="name">{{ house.name }}</div>
       <div class="pigeon" v-for="pigeon in pigeons" :key="pigeon.name">
         <div v-if="pigeon.id === house.event">{{ pigeon.name }}</div>

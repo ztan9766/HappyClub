@@ -67,6 +67,8 @@ export default {
       if (this.isNew) {
         api.createHouse(this.form).then(res => {
           if (res.success) {
+            this.$emit('refreshHouses')
+            this.clear()
             this.$message({
               message: res.message,
               type: 'success'

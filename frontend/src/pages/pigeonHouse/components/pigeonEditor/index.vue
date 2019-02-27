@@ -85,6 +85,7 @@ export default {
               type: 'success'
             })
             this.clear()
+            this.$emit('refreshHouses')
           }else{
             this.$message({
               message: res.message,
