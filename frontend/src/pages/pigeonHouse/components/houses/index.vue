@@ -1,12 +1,23 @@
 <template>
-  <div class="houses">
-    <div class="house" v-for="house in houses" :key="house.name" v-on:refreshHouses="getHouses">
-      <div class="name">{{ house.name }}</div>
-      <div class="pigeon" v-for="pigeon in pigeons" :key="pigeon.name">
-        <div v-if="pigeon.id === house.event">{{ pigeon.name }}</div>
-      </div>
-    </div>
-  </div>
+  <el-container>
+    <el-row>
+      <el-pagination
+        layout="prev, next"
+        :page-size="5"
+        :total="total"
+        :current-page="page"
+        @current-change="handlePageChange">
+      </el-pagination>
+    </el-row>
+    <el-row>
+      <el-collapse class="houses" accordion>
+        <el-collapse-item class="house" :title="house.name" :name="house.name" v-for="house in houses" :key="house._id">
+          <div class="name">{{ house.name }}</div>
+          <div class="pigeon" v-for="item in house.accidents" :key="item._id">{{ item.name }}</div>
+        </el-collapse-item>
+      </el-collapse>
+    </el-row>
+  </el-container>
 </template>
 <script>
 import api from '../../api'
@@ -16,7 +27,9 @@ export default {
   data() {
     return {
       houses: [],
-      pigeons: []
+      pigeons: [],
+      page: 1,
+      total: 0
     }
   },
   created() {
@@ -24,10 +37,10 @@ export default {
   },
   methods: {
     getHouses() {
-      api.getHouses().then(res => {
-        if (res.success && res.data.events && res.data.accidents) {
+      api.getHouses({ page: this.page }).then(res => {
+        if (res.success && res.data.events) {
           this.houses = res.data.events
-          this.pigeons = res.data.accidents
+          this.total = res.data.count
         }else{
           this.$message({
             message: 'can\'t get houses',
@@ -41,26 +54,14 @@ export default {
           type: 'error'
         })
       })
+    },
+    handlePageChange(page) {
+      this.page = page
+      this.getHouses()
     }
   }
 }
 </script>
 <style scoped>
-.houses{
-  position: absolute;
-  left: 15%;
-  width: 70%;
-  bottom: 0;
-  text-align: center;
-}
-.house{
-  padding: 20px 10px;
-}
-.pigeon{
-  display: inline-block;
-  padding: 0 10px;
-  width: 80px;
-  height: 80px;
-  word-break: break-all
-}
+
 </style>

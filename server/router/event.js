@@ -76,28 +76,32 @@ eventRouter
     })
   })
 
-eventRouter.route('/houses').get((req, res) => {
-  Event.find({}).sort({ date: -1 }).exec((err, _events) => {
-    if (err) {
-      res.status(500).send({ success: false, message: 'error when finding events.' })
-    } else {
-      let latestThreeEvents = _events.slice(0, 2)
-      let accidents = []
-      Accident.find({}).exec((err, _accidents) => {
-        if (err) {
-          res.status(500).send({ success: false, message: 'error when finding accidents' })
-        } else {
-          for (let i = 0; i < latestThreeEvents.length; i++) {
-            for (const _accident of _accidents) {
-              if (_accident.event.toString() === latestThreeEvents[i].id) {
-                accidents.push(_accident)
+eventRouter.route('/houses').post((req, res) => {
+  const page = req.body.page || 1
+  const limit = req.body.limit || 5
+  Event.countDocuments({}).exec((err, count) => {
+    Event.find({}).skip((page - 1) * limit).limit(limit).sort({ date: -1 }).exec((err, _events) => {
+      if (err) {
+        res.status(500).send({ success: false, message: 'error when finding events.' })
+      } else {
+        let latestThreeEvents = JSON.parse(JSON.stringify(_events))
+        Accident.find({}).exec((err, _accidents) => {
+          if (err) {
+            res.status(500).send({ success: false, message: 'error when finding accidents' })
+          } else {
+            for (let i = 0; i < latestThreeEvents.length; i++) {
+              latestThreeEvents[i].accidents = []
+              for (const _accident of _accidents) {
+                if (_accident.event.toString() === latestThreeEvents[i]._id) {
+                  latestThreeEvents[i].accidents.push(_accident)
+                }
               }
             }
+            res.status(200).send({ success: true, data: { events: latestThreeEvents, count: count } })
           }
-          res.status(200).send({ success: true, data: { events: latestThreeEvents, accidents: accidents } })
-        }
-      })
-    }
+        })
+      }
+    })
   })
 })
 

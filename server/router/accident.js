@@ -18,13 +18,24 @@ accidentRouter.route('/all').get((req, res) => {
 })
 
 accidentRouter.route('/create').post((req, res) => {
-  Accident.create(req.body, function (err, _accident) {
+  Accident.findOne({ event: req.body.event, user: req.body.user }, (err, _accident) => {
     if (err) {
       res.status(500).send({ success: false, message: 'Accident creation failed.' })
     } else {
-      res.status(200).send({ success: true, message: `Accident ${_accident.name} created.` })
+      if (_accident) {
+        res.status(200).send({ success: false, message: `user already had accident in this event.` })
+      } else {
+        Accident.create(req.body, function (err, __accident) {
+          if (err) {
+            res.status(500).send({ success: false, message: 'Accident creation failed.' })
+          } else {
+            res.status(200).send({ success: true, message: `Accident ${__accident.name} created.` })
+          }
+        })
+      }
     }
   })
+  
 })
 
 accidentRouter

@@ -68,7 +68,8 @@ export default {
       if (this.isNew) {
         api.createHouse(this.form).then(res => {
           if (res.success) {
-            this.$emit('refreshHouses')
+            this.$emit('refresh')
+            this.$emit('close-house')
             this.clear()
             this.$message({
               message: res.message,

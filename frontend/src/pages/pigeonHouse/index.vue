@@ -4,17 +4,23 @@
       <el-col class="name" :span="4" :offset="20">{{ name }}</el-col>
     </el-header>
     <el-main>
-      <rank-board />
-      <houses />
-      <!-- House editor -->
-      <el-button class="edit-btn house" type="primary" icon="el-icon-plus" circle @click="houseDialogVisible = true"></el-button>
+      <rank-board ref="rankBoard" />
+      <houses ref="houses"/>
+
+      <el-dropdown class="action" @command="handleCommand" :hide-on-click="false">
+        <el-button type="primary" style="font-size: 32px" icon="el-icon-plus" circle></el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="house">活动</el-dropdown-item>
+          <el-dropdown-item command="pigeon">鸽子</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      
+      <!-- dialogs -->
       <el-dialog title="新活动" :visible.sync="houseDialogVisible" width="90%">
-        <house-editor/>
+        <house-editor v-on:refresh="refreshComponents" v-on:close-house="houseDialogVisible = false"/>
       </el-dialog>
-      <!-- Pigeon editor -->
-      <el-button class="edit-btn pigeon" type="warning" icon="el-icon-plus" circle @click="pigeonDialogVisible = true"></el-button>
       <el-dialog title="新鸽子" :visible.sync="pigeonDialogVisible" width="90%">
-        <pigeon-editer/>
+        <pigeon-editer v-on:refresh="refreshComponents" v-on:close-pigeon="pigeonDialogVisible = false"/>
       </el-dialog>
     </el-main>
   </el-container>
@@ -39,6 +45,22 @@ export default {
       houseDialogVisible: false,
       pigeonDialogVisible: false
     }
+  },
+  methods: {
+    refreshComponents() {
+      this.$refs.rankBoard.pullData()
+      this.$refs.houses.getHouses()
+    },
+    handleCommand(command) {
+      switch(command) {
+        case 'house':
+          this.houseDialogVisible = true
+          break
+        case 'pigeon':
+          this.pigeonDialogVisible = true
+          break
+      }
+    }
   }
 }
 </script>
@@ -46,17 +68,9 @@ export default {
   .name{
     color: #fff;
   }
-  .edit-btn.house{
+  .action{
     position: absolute;
-    bottom: 18px;
-    left: 18px;
-  }
-  .edit-btn.pigeon{
-    position: absolute;
-    bottom: 18px;
-    right: 18px;
-  }
-  .edit-btn  i{
-    font-size: 34px;
+    bottom: 26px;
+    right: 28px;
   }
 </style>

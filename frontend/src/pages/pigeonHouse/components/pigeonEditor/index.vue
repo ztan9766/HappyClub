@@ -78,14 +78,15 @@ export default {
   methods: {
     onSubmit() {
       if(this.isNew) {
-        api.create(this.form).then(res => {
+        api.createPigeon(this.form).then(res => {
           if (res.success) {
             this.$message({
               message: res.message,
               type: 'success'
             })
             this.clear()
-            this.$emit('refreshHouses')
+            this.$emit('refresh')
+            this.$emit('close-pigeon')
           }else{
             this.$message({
               message: res.message,
@@ -94,7 +95,7 @@ export default {
           }
         })
       } else {
-        api.update(this.form._id, this.form).then(res => {
+        api.updatePigeon(this.form._id, this.form).then(res => {
           if (res.success) {
             this.$message({
               message: res.message,

@@ -21,10 +21,11 @@ const getRankData = () => {
   })
 }
 
-const getHouses = () => {
+const getHouses = data => {
   return request({
     url: 'event/houses',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 
