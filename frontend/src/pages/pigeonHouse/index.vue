@@ -1,10 +1,10 @@
 <template>
   <el-container>
-    <el-header height="40px">
-      <el-col class="name" :span="4" :offset="20">{{ name }}</el-col>
+    <el-header height="50px">
+      <el-col class="name" :span="4">{{ name }}</el-col>
+      <el-col  :span="8" :offset="12"><rank-board ref="rankBoard" /></el-col>
     </el-header>
     <el-main>
-      <rank-board ref="rankBoard" />
       <houses ref="houses"/>
 
       <el-dropdown class="action" @command="handleCommand" :hide-on-click="false">
@@ -65,12 +65,21 @@ export default {
 }
 </script>
 <style scoped>
-  .name{
-    color: #fff;
+  .el-header{
+    background-color: #E9EEF3;
+    color: #333;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
   .action{
     position: absolute;
     bottom: 26px;
     right: 28px;
+  }
+  .name{
+    font-size: 22px;
+    font-weight: 600;
+    color: #409EFF;
+    text-transform: capitalize;
   }
 </style>
