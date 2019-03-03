@@ -4,17 +4,33 @@ import store from './store'
 import login from './pages/login'
 import pageNoFound from './pages/pageNoFound'
 import pigeonHouse from './pages/pigeonHouse'
+import rank from './pages/rank'
 
 Vue.use(VueRouter)
 
 let routes = [
   {
     path: '/login',
-    component: login
+    component: login,
+    beforeEnter: (to, from, next) => {
+      if(store.state.token) {
+        next('/pigeonHouse')
+      }
+    }
   },
   {
     path: '/pigeonHouse',
-    component: pigeonHouse
+    component: pigeonHouse,
+    meta: {
+      requireAuth: true
+    }
+  },
+  {
+    path: '/rank',
+    component: rank,
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: '/',

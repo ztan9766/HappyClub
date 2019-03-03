@@ -1,8 +1,10 @@
 <template>
   <el-container>
-    <el-header height="50px">
-      <el-col class="name" :span="4">{{ name }}</el-col>
-      <el-col  :span="8" :offset="12"><rank-board ref="rankBoard" /></el-col>
+    <el-header>
+      <el-col :span="6">
+        <router-link to="/rank" class="header-link">鸽子榜</router-link>
+      </el-col>
+      <el-col class="name" :span="6" :offset="12">{{ name }}</el-col>
     </el-header>
     <el-main>
       <houses ref="houses"/>
@@ -26,7 +28,6 @@
   </el-container>
 </template>
 <script>
-import rankBoard from './components/rankBoard'
 import houses from './components/houses'
 import houseEditor from './components/houseEditor'
 import pigeonEditer from './components/pigeonEditor'
@@ -34,7 +35,6 @@ import pigeonEditer from './components/pigeonEditor'
 export default {
   name: 'pigeon-house',
   components: {
-    rankBoard,
     houses,
     houseEditor,
     pigeonEditer
@@ -48,7 +48,6 @@ export default {
   },
   methods: {
     refreshComponents() {
-      this.$refs.rankBoard.pullData()
       this.$refs.houses.getHouses()
     },
     handleCommand(command) {
@@ -65,21 +64,9 @@ export default {
 }
 </script>
 <style scoped>
-  .el-header{
-    background-color: #E9EEF3;
-    color: #333;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
   .action{
     position: absolute;
     bottom: 26px;
     right: 28px;
-  }
-  .name{
-    font-size: 22px;
-    font-weight: 600;
-    color: #409EFF;
-    text-transform: capitalize;
   }
 </style>

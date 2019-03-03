@@ -1,9 +1,28 @@
 <template>
   <div v-loading.fullscreen.lock="fullscreenLoading">
+    <el-row class="list-header">
+      <el-col :span="6">
+        <span>活动列表</span>
+      </el-col>
+      <el-col :span="18" style="text-align: right">
+        <el-pagination
+          layout="prev, next"
+          :page-size="5"
+          :total="total"
+          :current-page="page"
+          @current-change="handlePageChange"
+        ></el-pagination>
+      </el-col>
+    </el-row>
     <el-row>
-      <el-col :span="20" :offset="2">
+      <el-col :span="24">
         <el-collapse class="houses" accordion>
-          <el-collapse-item class="house" :name="house.name" v-for="house in houses" :key="house._id">
+          <el-collapse-item
+            class="house"
+            :name="house.name"
+            v-for="house in houses"
+            :key="house._id"
+          >
             <template slot="title">
               <div class="title">{{ house.name }}</div>
             </template>
@@ -17,24 +36,13 @@
         </el-collapse>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="20" :offset="2">
-        <el-pagination
-          layout="prev, next"
-          :page-size="5"
-          :total="total"
-          :current-page="page"
-          @current-change="handlePageChange">
-        </el-pagination>
-      </el-col>
-    </el-row>
   </div>
 </template>
 <script>
-import api from '../../api'
+import api from "../../api";
 
 export default {
-  name: 'houses',
+  name: "houses",
   data() {
     return {
       houses: [],
@@ -42,49 +50,52 @@ export default {
       page: 1,
       total: 0,
       fullscreenLoading: false
-    }
+    };
   },
   created() {
-    this.getHouses()
+    this.getHouses();
   },
   methods: {
     getHouses() {
-      this.fullscreenLoading = true
-      api.getHouses({ page: this.page }).then(res => {
-        if (res.success && res.data.events) {
-          this.houses = res.data.events
-          this.total = res.data.count
-          this.fullscreenLoading = false
-        }else{
-          this.fullscreenLoading = false
-          this.$message({
-            message: 'can\'t get houses',
-            type: 'error'
-          })
-        }
-        
-      }).catch(err => {
-        console.log(err)
-        this.fullscreenLoading = false
-        this.$message({
-          message: 'error when getting houses',
-          type: 'error'
+      this.fullscreenLoading = true;
+      api
+        .getHouses({ page: this.page })
+        .then(res => {
+          if (res.success && res.data.events) {
+            this.houses = res.data.events;
+            this.total = res.data.count;
+            this.fullscreenLoading = false;
+          } else {
+            this.fullscreenLoading = false;
+            this.$message({
+              message: "can't get houses",
+              type: "error"
+            });
+          }
         })
-      })
+        .catch(err => {
+          console.log(err);
+          this.fullscreenLoading = false;
+          this.$message({
+            message: "error when getting houses",
+            type: "error"
+          });
+        });
     },
     handlePageChange(page) {
-      this.page = page
-      this.getHouses()
+      this.page = page;
+      this.getHouses();
     }
   }
-}
+};
 </script>
 <style scoped>
-  .title{
-    font-size: 26px;
-    font-weight: 600;
-  }
-  .content{
-    font-size: 18px;
-  }
+.title {
+  font-size: 22px;
+  font-weight: 600;
+}
+.content {
+  font-size: 18px;
+  color: #909399;
+}
 </style>

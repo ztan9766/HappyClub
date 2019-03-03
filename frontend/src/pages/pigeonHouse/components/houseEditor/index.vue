@@ -1,27 +1,17 @@
 <template>
   <el-form ref="form" :model="form" label-width="80px">
-    <el-form-item label="Name">
+    <el-form-item label="名称" required>
       <el-input v-model="form.name"></el-input>
     </el-form-item>
-    <el-form-item label="Description">
+    <el-form-item label="描述">
       <el-input v-model="form.description"></el-input>
     </el-form-item>
-    <el-form-item label="Date">
+    <el-form-item label="日期" required>
       <el-input type="date" v-model="form.date"></el-input>
     </el-form-item>
-    <el-form-item label="Status">
-      <el-select v-model="form.status" placeholder="请选择">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </el-form-item>
     <el-form-item>
-      <el-button v-if="isNew" type="primary" @click="onSubmit">修改</el-button>
-      <el-button v-else type="primary" @click="onSubmit">保存</el-button>
+      <el-button v-if="isNew" type="primary" @click="onSubmit">保存</el-button>
+      <el-button v-else type="primary" @click="onSubmit">修改</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -66,7 +56,13 @@ export default {
   methods: {
     onSubmit() {
       if (this.isNew) {
-        api.createHouse(this.form).then(res => {
+        if (this.form.name === "" || this.form.date === "") {
+          this.$message({
+            message: "Please enter a name and select a date.",
+            type: "error"
+          });
+        }else{
+          api.createHouse(this.form).then(res => {
           if (res.success) {
             this.$emit('refresh')
             this.$emit('close-house')
@@ -87,6 +83,7 @@ export default {
             type: 'error'
           })
         })
+        }
       } else {
         api.updateHouse(this.form._id, this.form).then(res => {
           if (res.success) {

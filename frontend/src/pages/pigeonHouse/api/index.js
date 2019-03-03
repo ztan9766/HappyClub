@@ -14,13 +14,6 @@ const getAllEvents = () => {
   })
 }
 
-const getRankData = () => {
-  return request({
-    url: 'rank',
-    method: 'get'
-  })
-}
-
 const getHouses = data => {
   return request({
     url: 'event/houses',
@@ -75,4 +68,4 @@ const getPigeon = accidentId => {
   })
 }
 
-export default { getAllUsers, getAllEvents, getRankData, getHouses, updateHouse, getHouse, createHouse, updatePigeon, createPigeon, getPigeon }
+export default { getAllUsers, getAllEvents, getHouses, updateHouse, getHouse, createHouse, updatePigeon, createPigeon, getPigeon }
