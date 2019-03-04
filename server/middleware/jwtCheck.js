@@ -6,7 +6,7 @@ export default function jwtCheck (req, res, next) {
   if (token) {
     jwt.verify(token, config.secret, function (err, decoded) {
       if (err) {
-        return res.json({ success: false, message: '无效的token.', cleanStorage: true })
+        return res.status(403).send({ success: false, message: '请重新登陆.', cleanStorage: true })
       } else {
         req.decoded = decoded
         next()
@@ -14,7 +14,7 @@ export default function jwtCheck (req, res, next) {
     })
   } else {
     // 没有拿到token 返回错误
-    return res.status(403).send({
+    return res.status(401).send({
       success: false,
       message: '没有找到token.'
     })

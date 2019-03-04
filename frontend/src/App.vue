@@ -16,8 +16,6 @@ body {
 .el-header {
   background-color: #e9eef3;
   color: #333;
-  padding-top: 10px;
-  padding-bottom: 10px;
 }
 .el-header div{
   line-height: 60px;

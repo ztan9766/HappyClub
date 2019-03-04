@@ -30,7 +30,7 @@ app.use(helmet())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-const whitelist = ['http://localhost', 'http://localhost:8080']
+const whitelist = ['http://localhost', 'http://localhost:8080', 'http://192.168.62.32:8080']
 app.use(cors({
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {

@@ -45,14 +45,12 @@ service.interceptors.response.use(
                 });                    
                 localStorage.removeItem('token');                    
                 store.commit('loginSuccess', null);                    
-                setTimeout(() => {                        
-                    this.$router.replace({                            
-                        path: '/login',                            
-                        query: { 
-                            redirect: this.$router.currentRoute.fullPath 
-                        }                        
-                    });                    
-                }, 1000);                    
+                this.$router.replace({                            
+                  path: '/login',                            
+                  query: { 
+                      redirect: this.$router.currentRoute.fullPath 
+                  }                        
+                });                    
                 break; 
             case 404:                    
                 Message({                        
