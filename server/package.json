@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node app.js",
     "start": "babel-node app.js",
-    "server": "pm2 start app.js --name hc-backend"
+    "server": "pm2 start pm2-entry.js --name hc-backend"
   },
   "repository": {
     "type": "git",

@@ -4,7 +4,7 @@ import store from '../store/index'
 import { Message } from 'element-ui'
 
 const service = axios.create({
-  baseURL: config.BASE_API,
+  baseURL: process.env.NODE_ENV === 'dev' ? 'http://127.0.0.1:5656/api/' : config.BASE_API,
   withCredentials: true,
   timeout: 15000,
   headers: {
