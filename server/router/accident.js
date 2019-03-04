@@ -25,7 +25,15 @@ accidentRouter.route('/create').post((req, res) => {
       if (_accident) {
         res.status(200).send({ success: false, message: `user already had accident in this event.` })
       } else {
-        Accident.create(req.body, function (err, __accident) {
+        let createData = {
+          created_by: req.decoded._id
+        }
+        if (req.body.name) createData.name = req.body.name
+        if (req.body.user) createData.user = req.body.user
+        if (req.body.event) createData.event = req.body.event
+        if (req.body.description) createData.description = req.body.description
+
+        Accident.create(createData, function (err, __accident) {
           if (err) {
             res.status(500).send({ success: false, message: 'Accident creation failed.' })
           } else {

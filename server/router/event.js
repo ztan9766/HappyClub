@@ -29,7 +29,9 @@ eventRouter.route('/all').get((req, res) => {
 })
 
 eventRouter.route('/create').post((req, res) => {
-  let createData = {}
+  let createData = {
+    created_by: req.decoded._id
+  }
   if (req.body.name) createData.name = req.body.name
   if (req.body.date) createData.date = moment(req.body.date).unix()
   if (req.body.description) createData.description = req.body.description
