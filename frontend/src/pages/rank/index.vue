@@ -23,7 +23,7 @@
       <el-col :span="24">
         <span v-if="this.isEmpty" class="list-like">暂无数据</span>
         <ul v-else style="list-style: none">
-          <li v-for="(item, index) in list" :key="item._id">{{ index + 1 }}. {{ item.name }}</li>
+          <li v-for="(item, index) in list" :key="item._id">#{{ index + 1 }} {{ item.name }}<span style="float: right;">{{item.times}}</span></li>
         </ul>
       </el-col>
     </el-row>
@@ -62,10 +62,10 @@ export default {
       api.getRankData().then(res => {
         if (res.success && res.data.rankLists) {
           this.month = res.data.rankLists.mon
-            .sort(this.keySort("times", true))
+            .sort(this.keySort)
             .slice(0, 5);
           this.all = res.data.rankLists.all
-            .sort(this.keySort("times", true))
+            .sort(this.keySort)
             .slice(0, 5);
         } else {
           this.$message({
@@ -74,10 +74,8 @@ export default {
         }
       });
     },
-    keySort(key, sortType) {
-      return function(a, b) {
-        return sortType ? ~~(a[key] < b[key]) : ~~(a[key] > b[key]);
-      };
+    keySort(a, b) {
+      return b.times - a.times
     }
   }
 };
@@ -85,8 +83,10 @@ export default {
 <style scoped>
 .list-like{
   display: block;
-  padding-left: 40px;
   margin: 16px 0;
+}
+ul{
+  padding: 0;
 }
 </style>
 

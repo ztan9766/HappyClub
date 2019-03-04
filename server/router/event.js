@@ -29,7 +29,12 @@ eventRouter.route('/all').get((req, res) => {
 })
 
 eventRouter.route('/create').post((req, res) => {
-  Event.create(req.body, function (err, _event) {
+  let createData = {}
+  if (req.body.name) createData.name = req.body.name
+  if (req.body.date) createData.date = moment(req.body.date).unix()
+  if (req.body.description) createData.description = req.body.description
+
+  Event.create(createData, function (err, _event) {
     if (err) {
       res.status(500).send({ success: false, message: 'Event creation failed.' })
     } else {
@@ -84,20 +89,20 @@ eventRouter.route('/houses').post((req, res) => {
       if (err) {
         res.status(500).send({ success: false, message: 'error when finding events.' })
       } else {
-        let latestThreeEvents = JSON.parse(JSON.stringify(_events))
+        let events = JSON.parse(JSON.stringify(_events))
         Accident.find({}).exec((err, _accidents) => {
           if (err) {
             res.status(500).send({ success: false, message: 'error when finding accidents' })
           } else {
-            for (let i = 0; i < latestThreeEvents.length; i++) {
-              latestThreeEvents[i].accidents = []
+            for (let i = 0; i < events.length; i++) {
+              events[i].accidents = []
               for (const _accident of _accidents) {
-                if (_accident.event.toString() === latestThreeEvents[i]._id) {
-                  latestThreeEvents[i].accidents.push(_accident)
+                if (_accident.event.toString() === events[i]._id) {
+                  events[i].accidents.push(_accident)
                 }
               }
             }
-            res.status(200).send({ success: true, data: { events: latestThreeEvents, count: count } })
+            res.status(200).send({ success: true, data: { events: events, count: count } })
           }
         })
       }

@@ -24,13 +24,16 @@
             :key="house._id"
           >
             <template slot="title">
-              <div class="title">{{ house.name }}</div>
+              <div class="title"><span>{{ formateDate(house.date) }}: <span style="color: #67C23A">{{ house.name }}</span></span></div>
             </template>
-            <div v-if="house.accidents.length > 0">
-              <div class="content" v-for="item in house.accidents" :key="item._id">{{ item.name }}</div>
+            <div v-if="house.accidents.length > 0" class="content">
+              <div style="color: #333;"><span>咕咕：{{ house.accidents.length }}</span></div>
+              <span v-for="(item, index) in house.accidents" :key="item._id">
+                <span v-if="index !== 0">, </span>{{ item.name }}
+              </span>
             </div>
-            <div v-else>
-              <div class="content">-- 没有鸽子 --</div>
+            <div v-else class="content">
+              <div>-- 没有鸽子 --</div>
             </div>
           </el-collapse-item>
         </el-collapse>
@@ -85,6 +88,10 @@ export default {
     handlePageChange(page) {
       this.page = page;
       this.getHouses();
+    },
+    formateDate(unixDate) {
+      const date = new Date(unixDate * 1000)
+      return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
     }
   }
 };
@@ -97,5 +104,11 @@ export default {
 .content {
   font-size: 18px;
   color: #909399;
+}
+.content{
+  margin: 
+}
+.content:first-child{
+  margin-left: 0;
 }
 </style>

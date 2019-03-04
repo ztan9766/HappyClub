@@ -52,7 +52,7 @@ export default {
     api.getAllEvents().then(res => {
       for (const event of res.data.events) {
         this.eventOptions.push({
-          label: event.name,
+          label: `${this.formateDate(event.date)}: ${event.name}`,
           value: event._id
         });
       }
@@ -127,6 +127,10 @@ export default {
         user: "",
         event: ""
       };
+    },
+    formateDate(unixDate) {
+      const date = new Date(unixDate * 1000)
+      return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
     }
   }
 };
