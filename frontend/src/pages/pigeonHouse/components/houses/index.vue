@@ -7,7 +7,7 @@
       <el-col :span="18" style="text-align: right">
         <el-pagination
           layout="prev, next"
-          :page-size="5"
+          :page-size="pageSize"
           :total="total"
           :current-page="page"
           @current-change="handlePageChange"
@@ -51,6 +51,7 @@ export default {
       houses: [],
       pigeons: [],
       page: 1,
+      pageSize: 10,
       total: 0,
       fullscreenLoading: false
     };
@@ -62,7 +63,7 @@ export default {
     getHouses() {
       this.fullscreenLoading = true;
       api
-        .getHouses({ page: this.page })
+        .getHouses({ page: this.page, limit: this.pageSize })
         .then(res => {
           if (res.success && res.data.events) {
             this.houses = res.data.events;

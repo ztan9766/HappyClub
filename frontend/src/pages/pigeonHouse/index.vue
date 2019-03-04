@@ -22,7 +22,7 @@
         <house-editor v-on:refresh="refreshComponents" v-on:close-house="houseDialogVisible = false"/>
       </el-dialog>
       <el-dialog title="新鸽子" :visible.sync="pigeonDialogVisible" width="90%">
-        <pigeon-editer v-on:refresh="refreshComponents" v-on:close-pigeon="pigeonDialogVisible = false"/>
+        <pigeon-editer ref="pigeonEditer" v-on:refresh="refreshComponents" v-on:close-pigeon="pigeonDialogVisible = false"/>
       </el-dialog>
     </el-main>
   </el-container>
@@ -48,7 +48,12 @@ export default {
   },
   methods: {
     refreshComponents() {
-      this.$refs.houses.getHouses()
+      if(this.$refs.houses){
+        this.$refs.houses.getHouses()
+      }
+      if(this.$refs.pigeonEditer){
+        this.$refs.pigeonEditer.pullData()
+      } 
     },
     handleCommand(command) {
       switch(command) {

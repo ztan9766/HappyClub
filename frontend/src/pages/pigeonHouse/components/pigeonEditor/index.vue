@@ -41,22 +41,7 @@ export default {
         this.form = res.data.accident;
       });
     }
-    api.getAllUsers().then(res => {
-      for (const user of res.data.users) {
-        this.userOptions.push({
-          label: user.name,
-          value: user._id
-        });
-      }
-    });
-    api.getAllEvents().then(res => {
-      for (const event of res.data.events) {
-        this.eventOptions.push({
-          label: `${this.formateDate(event.date)}: ${event.name}`,
-          value: event._id
-        });
-      }
-    });
+    this.pullData()
   },
   data() {
     return {
@@ -81,9 +66,9 @@ export default {
             type: "error"
           });
         } else {
-          for(const user of this.userOptions) {
-            if(user.value === this.form.user){
-              this.form.name = user.label
+          for (const user of this.userOptions) {
+            if (user.value === this.form.user) {
+              this.form.name = user.label;
             }
           }
           api.createPigeon(this.form).then(res => {
@@ -129,8 +114,29 @@ export default {
       };
     },
     formateDate(unixDate) {
-      const date = new Date(unixDate * 1000)
-      return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+      const date = new Date(unixDate * 1000);
+      return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+    },
+    pullData() {
+      this.userOptions = []
+      this.eventOptions = []
+      
+      api.getAllUsers().then(res => {
+        for (const user of res.data.users) {
+          this.userOptions.push({
+            label: user.name,
+            value: user._id
+          });
+        }
+      });
+      api.getAllEvents().then(res => {
+        for (const event of res.data.events) {
+          this.eventOptions.push({
+            label: `${this.formateDate(event.date)}: ${event.name}`,
+            value: event._id
+          });
+        }
+      });
     }
   }
 };

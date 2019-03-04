@@ -14,7 +14,6 @@ let routes = [
     component: login,
     beforeEnter: (to, from, next) => {
       if(store.state.token) {
-        console.log("yes")
         next('/pigeonHouse')
       }
       next()
