@@ -34,6 +34,10 @@ import api from "../../api";
 
 export default {
   name: "pigeon-edit",
+  props: {
+    userOptions: Array,
+    eventOptions: Array
+  },
   created() {
     this.isNew = this.$route.params.accidentId ? false : true;
     if (!this.isNew) {
@@ -41,7 +45,6 @@ export default {
         this.form = res.data.accident;
       });
     }
-    this.pullData()
   },
   data() {
     return {
@@ -52,9 +55,7 @@ export default {
         description: "",
         user: "",
         event: ""
-      },
-      userOptions: [],
-      eventOptions: []
+      }
     };
   },
   methods: {
@@ -116,27 +117,6 @@ export default {
     formateDate(unixDate) {
       const date = new Date(unixDate * 1000);
       return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-    },
-    pullData() {
-      this.userOptions = []
-      this.eventOptions = []
-      
-      api.getAllUsers().then(res => {
-        for (const user of res.data.users) {
-          this.userOptions.push({
-            label: user.name,
-            value: user._id
-          });
-        }
-      });
-      api.getAllEvents().then(res => {
-        for (const event of res.data.events) {
-          this.eventOptions.push({
-            label: `${this.formateDate(event.date)}: ${event.name}`,
-            value: event._id
-          });
-        }
-      });
     }
   }
 };

@@ -97,12 +97,14 @@ eventRouter.route('/houses').post((req, res) => {
             res.status(500).send({ success: false, message: 'error when finding accidents' })
           } else {
             for (let i = 0; i < events.length; i++) {
+              events[i].date = moment.unix(events[i].date).format('YYYY-MM-DD')
               events[i].accidents = []
               for (const _accident of _accidents) {
                 if (_accident.event.toString() === events[i]._id) {
                   events[i].accidents.push(_accident)
                 }
               }
+              events[i].times = events[i].accidents.length
             }
             res.status(200).send({ success: true, data: { events: events, count: count } })
           }
