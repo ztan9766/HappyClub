@@ -49,8 +49,13 @@
                         placement="top"
                         width="150"
                         trigger="click"
-                        :content="item.created_by && `记录员：${ getUserName(item.created_by) }`"
                       >
+                        <div v-if="item.description">
+                          <span>{{ `借口：${ item.description }` }}</span>
+                        </div>
+                        <div v-if="item.created_at">
+                          <span>{{ `记录员：${ getUserName(item.created_by) }` }}</span>
+                        </div>
                         <el-button slot="reference">{{ item.name }}</el-button>
                       </el-popover>
                     </el-form-item>
@@ -65,7 +70,11 @@
         </el-row>
       </div>
 
-      <el-dropdown @command="handleCommand" :hide-on-click="false" style="position: absolute; bottom: 26px; right: 28px;">
+      <el-dropdown
+        @command="handleCommand"
+        :hide-on-click="false"
+        style="position: absolute; bottom: 26px; right: 28px;"
+      >
         <el-button type="primary" style="font-size: 32px" icon="el-icon-plus" circle></el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="house">活动</el-dropdown-item>
@@ -124,7 +133,12 @@ export default {
   methods: {
     refreshComponents() {
       this.getHouses();
+      this.events = [];
       this.getEvents();
+    },
+    formateDate(unixDate) {
+      const date = new Date(unixDate * 1000);
+      return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
     },
     handleCommand(command) {
       switch (command) {
@@ -183,10 +197,10 @@ export default {
       });
     },
     getUserName(id) {
-      for(const user of this.users) {
-        if(user.value === id) return user.label
+      for (const user of this.users) {
+        if (user.value === id) return user.label;
       }
-      return ''
+      return "";
     },
     handlePageChange(page) {
       this.page = page;

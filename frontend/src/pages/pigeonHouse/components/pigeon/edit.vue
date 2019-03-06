@@ -113,10 +113,6 @@ export default {
         user: "",
         event: ""
       };
-    },
-    formateDate(unixDate) {
-      const date = new Date(unixDate * 1000);
-      return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
     }
   }
 };
