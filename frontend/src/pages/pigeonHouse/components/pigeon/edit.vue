@@ -10,6 +10,11 @@
         ></el-option>
       </el-select>
     </el-form-item>
+    <el-form-item label="扣分" required>
+      <el-select v-model="form.credit" placeholder="请选择">
+        <el-option v-for="n in maxCredit" :key="n" :label="n" :value="n"></el-option>
+      </el-select>
+    </el-form-item>
     <el-form-item label="借口">
       <el-input v-model="form.description"></el-input>
     </el-form-item>
@@ -54,8 +59,10 @@ export default {
         name: "",
         description: "",
         user: "",
-        event: ""
-      }
+        event: "",
+        credit: 1
+      },
+      maxCredit: 3
     };
   },
   methods: {
@@ -72,6 +79,7 @@ export default {
               this.form.name = user.label;
             }
           }
+          console.log(this.form)
           api.createPigeon(this.form).then(res => {
             if (res.success) {
               this.$message({

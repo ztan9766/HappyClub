@@ -50,6 +50,9 @@
                         width="150"
                         trigger="click"
                       >
+                        <div v-if="item.credit">
+                          <span>{{ `记${ item.credit }分` }}</span>
+                        </div>
                         <div v-if="item.description">
                           <span>{{ `借口：${ item.description }` }}</span>
                         </div>

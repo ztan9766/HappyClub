@@ -31,6 +31,7 @@ accidentRouter.route('/create').post((req, res) => {
         if (req.body.name) createData.name = req.body.name
         if (req.body.user) createData.user = req.body.user
         if (req.body.event) createData.event = req.body.event
+        if (req.body.credit) createData.credit = req.body.credit
         if (req.body.description) createData.description = req.body.description
 
         Accident.create(createData, function (err, __accident) {
