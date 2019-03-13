@@ -19,7 +19,7 @@ eventRouter.route('/active').get((req, res) => {
 })
 
 eventRouter.route('/all').get((req, res) => {
-  Event.find({}, (err, _events) => {
+  Event.find({}).sort({ date: -1 }).exec((err, _events) => {
     if (err) {
       res.status(500).send({ success: false, message: 'Can not find any events.' })
     } else {
